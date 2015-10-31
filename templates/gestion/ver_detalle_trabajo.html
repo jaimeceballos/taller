@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+{% block cuerpo %}
+
+	<h2>Detalle trabajo Realizado Nro. {{ trabajo.id }}</h2><hr>
+	<div>	
+		<ul>
+			<li>
+				<p class="text-left text-muted lead"><b>Cliente: </b> {{ cliente.nombre|capfirst }}</p>
+			</li>
+			<li>
+				<p class="text-left text-muted lead"><b>Vehiculo: </b> {{ trabajo.vehiculo.modelo_marca }} - {{ trabajo.vehiculo.patente }}</p>
+			</li>
+			<li>
+				<p class="text-left text-muted lead"><b>Fecha Recibido: </b> {{ trabajo.fecha_ingreso }}</p>
+			</li>
+			<li>
+				<p class="text-left text-muted lead"><b>Trabajo Realizado: </b> {{ trabajo.descripcion }}</p>
+			</li>
+			<li>
+				<p class="text-left text-muted lead"><b>Precio: </b> {{ trabajo.precio }}</p>
+			</li>
+		</ul>
+	</div><hr>	
+		<a href="{% url 'ver_ultimos_entregados' %}" class="btn btn-success pull-right">
+			Volver
+		</a>
+	
+
+{% endblock cuerpo %}

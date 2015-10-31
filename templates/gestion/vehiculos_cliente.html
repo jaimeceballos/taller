@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+{% block cuerpo %}
+<div>
+	<h2>Vehiculos del Cliente {{ cliente.nombre }}</h2><hr>
+		<ul>
+			{% for vehiculo in vehiculos %}
+			<li>
+				<p class="text-left lead"><b>Vehiculo: </b> {{ vehiculo.vehiculo.modelo_marca }} - <b>Patente: </b> {{ vehiculo.vehiculo.patente }} </p>
+			</li>
+			{% endfor %}
+		</ul>
+</div>
+{% endblock cuerpo %}

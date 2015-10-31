@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+
+{% block cuerpo %}
+		<h2>Cargar Nuevo trabajo</h2><hr>
+		<form role="form" method="POST" action="{% url 'cargar_trabajo_save' %}">{% csrf_token %}
+				{{ trabajo.as_p }}
+				<button type="submit" class="btn btn-success pull-right">
+					Guardar
+				</button>
+			</form>
+
+{% endblock cuerpo %}

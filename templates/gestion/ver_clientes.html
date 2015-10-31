@@ -1,0 +1,40 @@
+{% extends 'index.html' %}
+{% block cuerpo %}
+	<h2>Listado de clientes </h2><hr>
+<table class="table table-condensed table-hover">
+	<thead>
+		<tr>
+			<th>
+				Nombre
+			</th>
+			<th>
+				Telefono
+			</th>
+			<th>
+				Direccion
+			</th>
+			<th>
+				Acciones
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for elemento in listado %}
+		<tr>
+			<td>
+				{{ elemento.nombre }}
+			</td>
+			<td>
+				{{ elemento.telefono_numero }}
+			</td>
+			<td>
+				{{ elemento.direccion }}
+			</td>
+			<td>
+				<a href="{% url 'ver_vehiculos_cliente' elemento.id %}"><i class="glyphicon glyphicon-eye-open"></i> Ver vehiculos </a>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock cuerpo %}

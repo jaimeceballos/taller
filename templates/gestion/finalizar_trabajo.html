@@ -1,0 +1,41 @@
+{% extends 'index.html' %}
+{% block cuerpo %}
+<div>
+	<h2>Finalizar trabajo Nro. {{ trabajo.id }}</h2><hr>
+		<ul>
+			<li>
+				<p class="text-left text-muted lead"><b>Cliente: </b> {{ cliente.nombre|capfirst }}</p>
+			</li>
+			<li>
+				<p class="text-left text-muted lead"><b>Vehiculo: </b> {{ trabajo.vehiculo.modelo_marca }} - {{ trabajo.vehiculo.patente }}</p>
+			</li>
+			<li>
+				<p class="text-left text-muted lead"><b>Fecha Recibido: </b> {{ trabajo.fecha_ingreso }}</p>
+			</li>
+		</ul>
+	<hr>
+	<form id="form_finalizar_trabajo" role="form" method="POST" action="{% url 'finaliza' trabajo.id %}">{% csrf_token %}
+		<div class="form-group">
+			<label for="exampleInputPassword1">
+				Trabajo Realizado
+			</label>
+			{{ form.descripcion }}
+		</div>
+		<div class="form-group">
+			<label for="exampleInputPassword1">
+				Precio
+			</label>
+			{{ form.precio }}<script type="text/javascript">  </script>
+		</div>
+		<button type="submit" class="btn btn-success pull-right">
+			Guardar
+		</button>
+		{{ form.vehiculo }} 
+		<script type="text/javascript"> 
+			$("#id_precio").removeAttr("disabled");
+			$("#id_precio").attr("required","true");	
+			$("#id_vehiculo").hide();
+		 </script>
+	</form>
+</div>
+{% endblock cuerpo %}
