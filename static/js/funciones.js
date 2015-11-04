@@ -23,8 +23,24 @@ $(document).ready(function() {
 			$("#id_patente").focus();
 		}
 	});
+	$("#id_cliente").change(function(){
+		var cliente = $("#id_cliente").find(":selected").text();
 
+		if(cliente !=""){
+			$("#id_nuevo-propietario").hide();
+		}else{
+			$("#id_nuevo-propietario").show();
+		}
+	});
+	$("#id_tbl-cliente-vehiculo").DataTable();
+	$("#id_tbl-clientes").DataTable();
+	$("#id_tbl-trabajos").DataTable();
+	$("#id_tbl-entregados").DataTable();
 	$("#id_vehiculo").select2({
+	  placeholder: "Elija un vehiculo",
+	  allowClear: true
+	});
+	$("#id_cliente").select2({
 	  placeholder: "Elija un vehiculo",
 	  allowClear: true
 	});

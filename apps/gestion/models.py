@@ -1,8 +1,10 @@
 from django.db import models
+import datetime
 
 # Create your models here.
 class Cliente(models.Model):
 	nombre					= models.CharField(max_length=100)
+	fecha_nacimiento		= models.DateField(default=datetime.date.today,blank=True)
 	telefono_numero 		= models.CharField(max_length=10, null=True)
 	direccion				= models.CharField(max_length=100, null=True)
 	otro_contacto			= models.CharField(max_length=150, null=True)
@@ -27,7 +29,7 @@ class Trabajo(models.Model):
 	fecha_entrega		= models.DateField(null=True)
 	km_ingreso			= models.IntegerField(null=True)
 	descripcion			= models.CharField(max_length=250,null=True)
-	estado 				= models.IntegerField(max_length=25)
+	estado 				= models.IntegerField()
 	precio 				= models.DecimalField(max_digits=10,decimal_places=2,null=True)
 
 	def __unicode__(self):

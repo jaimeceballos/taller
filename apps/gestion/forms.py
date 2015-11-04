@@ -5,6 +5,7 @@ from .models import *
 
 class ClienteForm(forms.ModelForm):
 	nombre					= forms.CharField(widget=forms.TextInput(attrs=dict({'class':'required form-control','placeholder':'Indique el nombre del cliente'})))
+	fecha_nacimiento 		= forms.DateField(widget=forms.DateInput(attrs=dict({'class':'required form-control','placeholder':'dd/mm/yyyy'})))
 	telefono_numero			= forms.CharField(required=False,widget=forms.TextInput(attrs=dict({'class':'form-control input-block-level','placeholder':'ej:154123456'})))
 	direccion				= forms.CharField(required=False,widget=forms.TextInput(attrs=dict({'class':'form-control input-block-level','placeholder':'Indique la direccion del cliente.'})))
 	otro_contacto			= forms.CharField(required=False,widget=forms.Textarea(attrs=dict({'class':'form-control','placeholder':'En este campo agregue todos los datos extra que pueda del cliente.'})))

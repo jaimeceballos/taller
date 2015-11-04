@@ -27,9 +27,12 @@
 			</label>
 			{{ form.precio }}<script type="text/javascript">  </script>
 		</div>
-		<button type="submit" class="btn btn-success pull-right">
-			Guardar
+		<div class="pull-right">
+		<button type="submit" class="btn btn-success btn-sm">
+			<i class="glyphicon glyphicon-save"></i> Guardar
 		</button>
+		<a href="" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-remove"></i> Cancelar</a>
+		</div>
 		{{ form.vehiculo }} 
 		<script type="text/javascript"> 
 			$("#id_precio").removeAttr("disabled");

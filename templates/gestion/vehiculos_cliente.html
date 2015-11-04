@@ -2,12 +2,40 @@
 {% block cuerpo %}
 <div>
 	<h2>Vehiculos del Cliente {{ cliente.nombre }}</h2><hr>
-		<ul>
+		<table class="table" id="id_tbl-cliente-vehiculo">
+			<thead>
+				<tr>
+					<th>
+						Vehiculo
+					</th>
+					<th>
+						Patente
+					</th>
+					<th>
+					</th>
+					<th>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
 			{% for vehiculo in vehiculos %}
-			<li>
-				<p class="text-left lead"><b>Vehiculo: </b> {{ vehiculo.vehiculo.modelo_marca }} - <b>Patente: </b> {{ vehiculo.vehiculo.patente }} </p>
-			</li>
+				<tr>
+					<td>
+						{{ vehiculo.vehiculo.modelo_marca }}
+					</td>
+					<td>
+						{{ vehiculo.vehiculo.patente }}
+					</td>
+					<td>
+						<a href=""> <i class="glyphicon glyphicon-plus"></i> Asignar Trabajo </a>
+					</td>
+					<td>
+						<a href=""> <i class="glyphicon glyphicon-list-alt"></i> Historial de trabajos </a>
+					</td>
+				</tr>
 			{% endfor %}
-		</ul>
+			</tbody>
+		</table>
+
 </div>
 {% endblock cuerpo %}

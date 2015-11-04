@@ -21,28 +21,30 @@ def home(request):
 def nuevo_vehiculo(request):
 	vehiculo 	= VehiculoForm()
 	cliente 	= ClienteForm()
+	clientes 	= Cliente.objects.all()
 	values={
+		'clientes' : clientes,
 		'vehiculo' : vehiculo,
 		'cliente'  : cliente,
 	}
 	return render_to_response('gestion/nuevo_vehiculo.html',values,context_instance = RequestContext(request))
+
 def guardar_vehiculo(request):
-	print request.method
 	if request.method == "POST":
 		vehiculo = VehiculoForm(request.POST)
 		cliente = ClienteForm(request.POST)
-		print vehiculo.errors #and cliente.is_valid() 
-		if vehiculo.is_valid() and cliente.is_valid():
+		if vehiculo.is_valid() and cliente.is_valid() and request.POST['id_cliente'] == "no_client":
 			auto = Vehiculo()
 			auto.patente 		= vehiculo.cleaned_data['patente']
 			auto.tipo_vehiculo  = vehiculo.cleaned_data['tipo_vehiculo']
 			auto.modelo_marca	= vehiculo.cleaned_data['modelo_marca']
 			auto.observaciones	= vehiculo.cleaned_data['observaciones']
 			persona = Cliente()
-			persona.nombre 			= cliente.cleaned_data['nombre']
-			persona.telefono_numero	= cliente.cleaned_data['telefono_numero']
-			persona.direccion 		= cliente.cleaned_data['direccion']
-			persona.otro_contacto	= cliente.cleaned_data['otro_contacto']
+			persona.nombre 				= cliente.cleaned_data['nombre']
+			persona.telefono_numero		= cliente.cleaned_data['telefono_numero']
+			persona.direccion 			= cliente.cleaned_data['direccion']
+			persona.otro_contacto		= cliente.cleaned_data['otro_contacto']
+			persona.fecha_nacimiento 	= cliente.cleaned_data['fecha_nacimiento']
 			try:
 				persona.save()
 				auto.save()
@@ -63,6 +65,34 @@ def guardar_vehiculo(request):
 				return render_to_response('index.html',values,context_instance = RequestContext(request))				
 			finally:
 				return HttpResponseRedirect(reverse("home"))
+		else:
+			if vehiculo.is_valid() and request.POST['id_cliente'] != "no_client":
+				auto = Vehiculo()
+				auto.patente 		= vehiculo.cleaned_data['patente']
+				auto.tipo_vehiculo  = vehiculo.cleaned_data['tipo_vehiculo']
+				auto.modelo_marca	= vehiculo.cleaned_data['modelo_marca']
+				auto.observaciones	= vehiculo.cleaned_data['observaciones']
+				persona = Cliente.objects.get(id=request.POST['id_cliente'])
+				try:
+					auto.save()
+					cliente_vehiculo  = ClienteVehiculo()
+					cliente_vehiculo.vehiculo 	= auto
+					cliente_vehiculo.cliente 	= persona
+					cliente_vehiculo.fecha 		=  time.strftime("%Y-%m-%d")
+					cliente_vehiculo.save()
+				except:
+					error = 'No se pudo guadar.'
+					vehiculo 	= VehiculoForm()
+					cliente 	= ClienteForm()
+					values={
+						'error' : error,
+						'vehiculo' : vehiculo,
+						'cliente'  : cliente,
+					}
+					return render_to_response('index.html',values,context_instance = RequestContext(request))				
+				finally:
+					return HttpResponseRedirect(reverse("home"))
+
 	return HttpResponseRedirect(reverse("home"))	
 
 def obtener_vehiculo(request,patente):
