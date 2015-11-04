@@ -31,7 +31,7 @@
 				{{ elemento.descripcion }}
 			</td>
 			<td>
-				<a href="{% url 'finalizar_trabajo' elemento.id %}"><i class="glyphicon glyphicon-ok"></i> Finalizar</a>
+				<a href=""><i class="glyphicon glyphicon-edit"></i> Editar </a> <a href="{% url 'finalizar_trabajo' elemento.id %}"><i class="glyphicon glyphicon-ok"></i> Finalizar</a>
 			</td>
 		</tr>
 		{% endfor %}

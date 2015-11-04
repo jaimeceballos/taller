@@ -112,19 +112,27 @@ def cargar_trabajo(request):
 def cargar_trabajo_save(request):
 	if request.method == "POST":
 		trabajo 	= TrabajoForm(request.POST)
+
 		if trabajo.is_valid():
-			nuevo 				= Trabajo()
-			nuevo.vehiculo 		= trabajo.cleaned_data['vehiculo']
-			nuevo.fecha_ingreso = time.strftime("%Y-%m-%d")
-			nuevo.km_ingreso 	= trabajo.cleaned_data['km_ingreso']
-			nuevo.descripcion	= trabajo.cleaned_data['descripcion']
-			nuevo.estado 		= 1
-			nuevo.save()
-			values = {
-				'error' : 'Trabajo guardado correctamente.',
-				'trabajo' : TrabajoForm()
-			}
-			return render_to_response('gestion/trabajo.html',values,context_instance = RequestContext(request))
+			if not trabajo_en_curso(trabajo.cleaned_data['vehiculo']):
+				nuevo 				= Trabajo()
+				nuevo.vehiculo 		= trabajo.cleaned_data['vehiculo']
+				nuevo.fecha_ingreso = time.strftime("%Y-%m-%d")
+				nuevo.km_ingreso 	= trabajo.cleaned_data['km_ingreso']
+				nuevo.descripcion	= trabajo.cleaned_data['descripcion']
+				nuevo.estado 		= 1
+				nuevo.save()
+				values = {
+					'error' : 'Trabajo guardado correctamente.',
+					'trabajo' : TrabajoForm()
+				}
+				return render_to_response('gestion/trabajo.html',values,context_instance = RequestContext(request))
+			else:
+				values = {
+					'error' : 'este vehiculo ya tiene un trabajo en curso por favor verifique en la pantalla de trabajos pendientes.',
+					'trabajo' : TrabajoForm()
+				}
+				return render_to_response('gestion/trabajo.html',values,context_instance = RequestContext(request))			
 	print trabajo.errors
 	values = {
 		'error' : 'No se pudo realizar la operacion, vuelva a intentarlo.',
@@ -208,3 +216,7 @@ def detalle_trabajo(request,id):
 		'trabajo' 	: trabajo,
 	}
 	return render_to_response('gestion/ver_detalle_trabajo.html',values,context_instance = RequestContext(request))
+
+
+def trabajo_en_curso(vehiculo):
+	return Trabajo.objects.filter(vehiculo=vehiculo,fecha_entrega=None)
