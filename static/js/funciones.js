@@ -5,10 +5,16 @@ $(document).ready(function() {
 			var patente = $("#id_patente").val();
 			$.get("/gestion/obtener_vehiculo/"+patente+"/",function(data){
 		        if(data.length>0){
-		        	$("#buscar-vehiculo").hide();
 		        	alerta = $("#alert");
-		        	alerta.show();
-		        	alerta.append("<p class='alert alert-warning'>El Vehiculo que intenta cargar ya existe, por favor seleccione cargar trabajo.</p>");	
+		        	if(alerta.find('p').length == 0){
+		        		alerta.append("<p class='alert alert-warning'>El Vehiculo que intenta cargar ya existe, por favor seleccione cargar trabajo.</p>");	
+		        		alerta.fadeIn();		        		
+		        	}else{
+		        		alerta.animate({ 'zoom': 1.2 }, 400);
+		        		alerta.animate({ 'zoom': 1 }, 400);
+		        		alerta.animate({ 'zoom': 1.2 }, 400);
+		        		alerta.animate({ 'zoom': 1 }, 400);
+		        	}
 		        }else{
 		        	$("#buscar-vehiculo").hide();
 		        	alerta = $("#alert");
@@ -41,7 +47,7 @@ $(document).ready(function() {
 	  allowClear: true
 	});
 	$("#id_cliente").select2({
-	  placeholder: "Elija un vehiculo",
+	  placeholder: "Elija un cliente",
 	  allowClear: true
 	});
 

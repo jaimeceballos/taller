@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+{% block estilo_impresora %}
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/imprimir.css' %}" media="print" />
+{% endblock estilo_impresora %}
+{% block body%}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<h3 class="text-center">
+				Trabajo No. {{ trabajo.id }}
+			</h3>
+			<dl class="dl-horizontal">
+				<dt>
+					Cliente
+				</dt>
+				<dd>
+					{{ cliente.nombre }}
+				</dd>
+				<dt>
+					Vehiculo
+				</dt>
+				<dd>
+				 {{ trabajo.vehiculo.patente }} - {{ trabajo.vehiculo.modelo_marca }}
+				</dd>
+				<dt>
+					Fecha Ingreso
+				</dt>
+				<dd>
+					{{ trabajo.fecha_ingreso }}
+				</dd>
+				<dt>
+					Fecha de finalizado
+				</dt>
+				<dd>
+					{{ trabajo.fecha_entrega }}
+				</dd>
+				
+			</dl>
+			<h4>
+				Descripcion del trabajo Realizado
+			</h4>
+			<p>
+				{{ trabajo.descripcion }}
+			</p>
+		</div>
+	</div>
+	<div id="boton">
+	<a href="javascript:void(0)" onclick="window.print();"><i class="glyphicon glyphicon-print"></i> imprimir </a>
+	</div>
+</div>
+{% endblock body %}

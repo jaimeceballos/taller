@@ -16,6 +16,9 @@ def home(request):
 		'vehiculo' : vehiculo,
 		'cliente'  : cliente,
 	}
+	if request.session.get('error'):
+		values['error'] = request.session.get('error')
+		del request.session['error']
 	return render_to_response('index.html',values,context_instance = RequestContext(request))
 
 def nuevo_vehiculo(request):
@@ -33,6 +36,7 @@ def guardar_vehiculo(request):
 	if request.method == "POST":
 		vehiculo = VehiculoForm(request.POST)
 		cliente = ClienteForm(request.POST)
+		print vehiculo.is_valid() and cliente.is_valid() and request.POST['id_cliente'] == "no_client"
 		if vehiculo.is_valid() and cliente.is_valid() and request.POST['id_cliente'] == "no_client":
 			auto = Vehiculo()
 			auto.patente 		= vehiculo.cleaned_data['patente']
@@ -64,6 +68,7 @@ def guardar_vehiculo(request):
 				}
 				return render_to_response('index.html',values,context_instance = RequestContext(request))				
 			finally:
+				request.session['error'] = "El vehiculo se guardo correctamente."
 				return HttpResponseRedirect(reverse("home"))
 		else:
 			if vehiculo.is_valid() and request.POST['id_cliente'] != "no_client":
@@ -91,8 +96,9 @@ def guardar_vehiculo(request):
 					}
 					return render_to_response('index.html',values,context_instance = RequestContext(request))				
 				finally:
+					request.session['error'] = "El vehiculo se guardo correctamente."
 					return HttpResponseRedirect(reverse("home"))
-
+	request.session['error'] = "El vehiculo no se pudo guardar, verifique los datos."
 	return HttpResponseRedirect(reverse("home"))	
 
 def obtener_vehiculo(request,patente):
@@ -161,8 +167,7 @@ def finalizar_trabajo(request,id):
 def finaliza(request,id):
 	if request.method == "POST":
 		form = TrabajoForm(request.POST)
-		print form.as_p()
-		if form.is_valid():
+		if form.is_valid() and form.cleaned_data['precio']:
 			trabajo 				= Trabajo.objects.get(id=id)
 			trabajo.descripcion 	= form.cleaned_data['descripcion']
 			trabajo.precio 			= form.cleaned_data['precio']
@@ -178,7 +183,7 @@ def finaliza(request,id):
 		'cliente' 	: cliente,
 		'form' 		: form,
 		'trabajo' 	: trabajo,
-		'error' : 'No se pudo procesar la solicitud.',
+		'error' : 'No se pudo procesar la solicitud, Verifique haber ingresado el precio.',
 	}
 	return render_to_response('gestion/finalizar_trabajo.html',values,context_instance = RequestContext(request))
 
@@ -220,3 +225,12 @@ def detalle_trabajo(request,id):
 
 def trabajo_en_curso(vehiculo):
 	return Trabajo.objects.filter(vehiculo=vehiculo,fecha_entrega=None)
+
+def imprimir_trabajo(request,id):
+	trabajo = Trabajo.objects.get(id=id)
+	cliente = trabajo.vehiculo.pertenece_a.all()[0].cliente
+	values = {
+		'cliente' : cliente,
+		'trabajo' : trabajo,
+	}
+	return render_to_response('gestion/imprimir_trabajo.html',values,context_instance = RequestContext(request))	

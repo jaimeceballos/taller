@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'^ver_clientes/$',ver_clientes,name='ver_clientes'),
     url(r'^ver_vehiculos_cliente/(?P<id>[0-9]+)/$',ver_vehiculos_cliente,name='ver_vehiculos_cliente'),
     url(r'^detalle_trabajo/(?P<id>[0-9]+)/$',detalle_trabajo,name='detalle_trabajo'),
+    url(r'^imprimir_trabajo/(?P<id>[0-9]+)/$',imprimir_trabajo,name='imprimir_trabajo'),
    
 ]
