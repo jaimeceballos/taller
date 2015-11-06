@@ -43,10 +43,12 @@
 			<p>
 				{{ trabajo.descripcion }}
 			</p>
+			<p><b><u>Precio:</u></b> $ {{ trabajo.precio }} </p>
 		</div>
 	</div>
 	<div id="boton">
-	<a href="javascript:void(0)" onclick="window.print();"><i class="glyphicon glyphicon-print"></i> imprimir </a>
+		<a href="{% url 'home' %}"><i class="glyphicon glyphicon-arrow-left"></i> Volver </a>
+		<a href="javascript:void(0)" onclick="window.print();"><i class="glyphicon glyphicon-print"></i> imprimir </a>
 	</div>
 </div>
 {% endblock body %}

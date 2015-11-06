@@ -27,10 +27,10 @@
 						{{ vehiculo.vehiculo.patente }}
 					</td>
 					<td>
-						<a href=""> <i class="glyphicon glyphicon-plus"></i> Asignar Trabajo </a>
+						<a href="{% url 'carga_trabajo' vehiculo.vehiculo.id %}"> <i class="glyphicon glyphicon-plus"></i> Asignar Trabajo </a>
 					</td>
 					<td>
-						<a href=""> <i class="glyphicon glyphicon-list-alt"></i> Historial de trabajos </a>
+						<a href="{% url 'ver_trabajos_vehiculo' vehiculo.vehiculo.id %}"> <i class="glyphicon glyphicon-list-alt"></i> Historial de trabajos </a>
 					</td>
 				</tr>
 			{% endfor %}

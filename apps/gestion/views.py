@@ -146,12 +146,33 @@ def cargar_trabajo_save(request):
 	}
 	return render_to_response('gestion/trabajo.html',values,context_instance = RequestContext(request))
 
+def carga_trabajo(request,id):
+	trabajo = TrabajoForm()
+	trabajo.fields['vehiculo'].initial = Vehiculo.objects.get(id=id)
+
+	values = {
+		'trabajo' : trabajo,
+	}
+	return render_to_response('gestion/trabajo.html',values,context_instance = RequestContext(request))
+
 def ver_trabajos(request):
 	listado 	= Trabajo.objects.filter(estado=1).order_by('-id')
 	values = {
 		'listado':listado,
 	}
 	return render_to_response('gestion/ver_trabajos.html',values,context_instance = RequestContext(request))
+
+def ver_trabajos_vehiculo(request,id):
+	vehiculo = Vehiculo.objects.get(id=id)
+	trabajos = vehiculo.trabajos_realizados.all()
+	cliente  =  vehiculo.pertenece_a.all().filter(fecha_hasta__isnull=True)[0].cliente
+	values = {
+		'vehiculo' : vehiculo,
+		'trabajos' : trabajos,
+		'cliente'  : cliente,
+	}
+	return render_to_response('gestion/ver_trabajos_vehiculo.html',values,context_instance=RequestContext(request))
+
 
 def finalizar_trabajo(request,id):
 	form 		 	= TrabajoForm(instance=Trabajo.objects.get(id=id))
@@ -174,7 +195,7 @@ def finaliza(request,id):
 			trabajo.fecha_entrega 	= time.strftime("%Y-%m-%d")
 			trabajo.estado 			= 2
 			trabajo.save()
-			return HttpResponseRedirect(reverse('ver_trabajos'))
+			return HttpResponseRedirect(reverse('imprimir_trabajo',args=[trabajo.id]))
 
 	form 		 	= TrabajoForm(instance=Trabajo.objects.get(id=id))
 	trabajo 		= Trabajo.objects.get(id=id)
@@ -234,3 +255,14 @@ def imprimir_trabajo(request,id):
 		'trabajo' : trabajo,
 	}
 	return render_to_response('gestion/imprimir_trabajo.html',values,context_instance = RequestContext(request))	
+
+def imprimir_historia(request,id):
+	vehiculo = Vehiculo.objects.get(id=id)
+	trabajos = vehiculo.trabajos_realizados.all()
+	cliente =  vehiculo.pertenece_a.all().filter(fecha_hasta__isnull=True)[0].cliente
+	values = {
+		'vehiculo' : vehiculo,
+		'cliente' : cliente,
+		'trabajos' : trabajos,
+	}
+	return render_to_response('gestion/imprimir_historia.html',values,context_instance = RequestContext(request))	

@@ -1,0 +1,66 @@
+{% extends 'index.html' %}
+{% block cuerpo %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header">
+				<h2>
+					Historial de trabajos realizados <small>{{ vehiculo.modelo_marca }} - {{ vehiculo.patente }} de {{ cliente.nombre }}</small>
+				</h2>
+			</div>
+		</div>
+	</div>	
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table" id="tbl_job-history">
+				<thead>
+					<tr>
+						<th>
+							Trabajo Realizado
+						</th>
+						<th>
+							Estado
+						</th>
+						<th>
+							Fecha de inicio
+						</th>
+						<th>
+							Fecha de finalizacion
+						</th>
+						<th>
+							Kilometraje
+						</th>	
+					</tr>
+				</thead>
+				<tbody>
+					{% for trabajo in trabajos %}
+					<tr class="{% if trabajo.estado == 2 %} success {% else %} danger {% endif %}">
+						<td>
+							{{  trabajo.descripcion }}
+						</td>
+						<td>
+							{% if trabajo.estado == 2 %} <span class="badge btn-success"><i class="glyphicon glyphicon-ok"></i></span> {% else %} <span class="badge btn-danger"><i class="glyphicon glyphicon-remove"></i></span> {% endif %}
+						</td>
+						<td>
+							{{ trabajo.fecha_ingreso }}
+						</td>
+						<td>
+							{{ trabajo.fecha_entrega }}
+						</td>
+						<td>
+							{{ trabajo.km_ingreso }}
+						</td>
+					</tr>					
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<a href="{% url 'imprimir_historia' vehiculo.id %}"> <i class="glyphicon glyphicon-print"></i> imprimir </a>
+			<a href="{% url 'ver_vehiculos_cliente' cliente.id %}" class="btn btn-success pull-right">Volver</a>
+		</div>
+	</div>
+</div>
+{% endblock cuerpo %}

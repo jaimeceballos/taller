@@ -42,6 +42,7 @@ $(document).ready(function() {
 	$("#id_tbl-clientes").DataTable();
 	$("#id_tbl-trabajos").DataTable();
 	$("#id_tbl-entregados").DataTable();
+	$("#tbl_job-history").DataTable();
 	$("#id_vehiculo").select2({
 	  placeholder: "Elija un vehiculo",
 	  allowClear: true
