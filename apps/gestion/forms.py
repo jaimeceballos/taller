@@ -2,6 +2,7 @@
 from django.forms import ModelForm
 from django import forms
 from .models import *
+import datetime
 
 class ClienteForm(forms.ModelForm):
 	nombre					= forms.CharField(widget=forms.TextInput(attrs=dict({'class':'required form-control','placeholder':'Indique el nombre del cliente'})))
@@ -32,11 +33,12 @@ class VehiculoForm(forms.ModelForm):
 
 class TrabajoForm(forms.ModelForm):
 	vehiculo 		= forms.ModelChoiceField(widget=forms.Select(attrs={'size':'13'}), queryset= Vehiculo.objects.all())
+	fecha_ingreso	= forms.DateField(initial=datetime.date.today)
 	km_ingreso 		= forms.CharField(required = False,widget=forms.TextInput(attrs=dict({'class':'form-control','placeholder':'Si es posible ingrese el kilometraje actual.'})))
 	descripcion 	= forms.CharField(required = False,widget=forms.Textarea(attrs=dict({'class':'required form-control','placeholder':'Describa el trabajo realizado.'})))
 	precio 			= forms.CharField(required = False,widget=forms.TextInput(attrs=dict({'class':'form-control','disabled':'disabled'})))
 
 	class Meta:
 		model  	= Trabajo
-		exclude = ['fecha_ingreso','fecha_entrega','estado',]
+		exclude = ['fecha_entrega','estado',]
 

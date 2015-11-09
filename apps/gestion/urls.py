@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^cargar_trabajo_save/$',cargar_trabajo_save,name='cargar_trabajo_save'),
     url(r'^ver_trabajos/$',ver_trabajos,name='ver_trabajos'),
     url(r'^ver_trabajos_vehiculo/(?P<id>[0-9]+)/$',ver_trabajos_vehiculo,name='ver_trabajos_vehiculo'),
+    url(r'^editar_trabajo/(?P<id>[0-9]+)/$',editar_trabajo,name='editar_trabajo'),
     url(r'^finalizar_trabajo/(?P<id>[0-9]+)/$',finalizar_trabajo,name='finalizar_trabajo'),
     url(r'^finaliza/(?P<id>[0-9]+)/$',finaliza,name='finaliza'),
     url(r'^ver_ultimos_entregados/$',ver_ultimos_entregados,name='ver_ultimos_entregados'),

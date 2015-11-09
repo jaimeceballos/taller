@@ -123,7 +123,7 @@ def cargar_trabajo_save(request):
 			if not trabajo_en_curso(trabajo.cleaned_data['vehiculo']):
 				nuevo 				= Trabajo()
 				nuevo.vehiculo 		= trabajo.cleaned_data['vehiculo']
-				nuevo.fecha_ingreso = time.strftime("%Y-%m-%d")
+				nuevo.fecha_ingreso = trabajo.cleaned_data['fecha_ingreso']
 				nuevo.km_ingreso 	= trabajo.cleaned_data['km_ingreso']
 				nuevo.descripcion	= trabajo.cleaned_data['descripcion']
 				nuevo.estado 		= 1
@@ -184,6 +184,23 @@ def finalizar_trabajo(request,id):
 		'trabajo' 	: trabajo,
 	}
 	return render_to_response('gestion/finalizar_trabajo.html',values,context_instance = RequestContext(request))
+
+def editar_trabajo(request,id):
+	form 		 	= TrabajoForm(instance=Trabajo.objects.get(id=id))
+	trabajo 		= Trabajo.objects.get(id=id)
+	cliente 		= trabajo.vehiculo.pertenece_a.get(fecha_hasta=None).cliente
+	if request.method == 'POST':
+		form = TrabajoForm(request.POST)
+		trabajo.descripcion = form.data['descripcion']
+		trabajo.save()
+		return HttpResponseRedirect(reverse('ver_trabajos'))
+	values = {
+		'cliente' 	: cliente,
+		'form' 		: form,
+		'trabajo' 	: trabajo,
+	}
+	return render_to_response('gestion/editar_trabajo.html',values,context_instance = RequestContext(request))
+
 
 def finaliza(request,id):
 	if request.method == "POST":

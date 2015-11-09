@@ -14,7 +14,7 @@
 			</li>
 		</ul>
 	<hr>
-	<form id="form_finalizar_trabajo" role="form" method="POST" action="{% url 'finaliza' trabajo.id %}">{% csrf_token %}
+	<form id="form_finalizar_trabajo" role="form" method="POST" action="{% url 'editar_trabajo' trabajo.id %}">{% csrf_token %}
 		<div class="form-group">
 			<label for="exampleInputPassword1">
 				Trabajo Realizado
