@@ -34,8 +34,11 @@
 		<a href="{% url 'ver_trabajos' %}" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-remove"></i> Cancelar</a>
 		</div>
 		{{ form.vehiculo }} 
+		{{ form.fecha_ingreso }}
 		<script type="text/javascript"> 
 			$("#id_vehiculo").hide();
+			$("#id_precio").removeAttr("disabled");
+			$("#id_fecha_ingreso").hide();
 		 </script>
 	</form>
 </div>

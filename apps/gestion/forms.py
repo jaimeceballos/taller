@@ -24,7 +24,7 @@ class VehiculoForm(forms.ModelForm):
 		)
 	tipo_vehiculo			= forms.ChoiceField(choices=TIPO_VEHICULO_CHOICES)
 	modelo_marca			= forms.CharField(widget=forms.TextInput(attrs=dict({'class':'required form-control','placeholder':'Ingrese la marca y modelo del vehiculo.'})))
-	patente 				= forms.CharField(widget=forms.TextInput(attrs=dict({'class':'requiered form-control col-md-2','placeholder':'Ingrese el numero de patente.'})))
+	patente 				= forms.CharField(widget=forms.TextInput(attrs=dict({'class':'requiered form-control col-md-2','autocomplete':'off','placeholder':'Ingrese el numero de patente.'})))
 	observaciones			= forms.CharField(required=False,widget=forms.Textarea(attrs=dict({'class':'requiered form-control','placeholder':'Aqui escriba todo los datos que considere relevantes acerca del vehiculo.'})))
 
 	class Meta:

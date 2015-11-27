@@ -1,5 +1,17 @@
 $(document).ready(function() { 
-
+	$("#cumpleanios").ready(function(){
+		$.get("/gestion/obtener_cumpleanios/",function(data){
+			body = $("#cumples");
+			if(data.length>0){
+				
+				for(var i = 0; i < data.length ; i ++ ){
+					body.append("<tr><td>"+data[i]['fields']['nombre']+"</td><td>"+data[i]['fields']['fecha_nacimiento']+"</td><td>"+data[i]['fields']['telefono_numero']+"</td></tr>")
+				}
+			}else{
+				body.append("<tr><td colspan='3'>NO HAY CLIENTES QUE CUMPLAN A&Ntilde;OS EN LOS PR&Oacute;XIMOS 15 D&Iacute;AS.</td></tr>")
+			}			
+		},"json");
+	});
 	$("#buscar-vehiculo").click(function(){
 		if($("#id_patente").val() != ""){
 			var patente = $("#id_patente").val();
@@ -51,6 +63,10 @@ $(document).ready(function() {
 	  placeholder: "Elija un cliente",
 	  allowClear: true
 	});
-
+	$("#id_fecha_nacimiento").datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'dd/mm/yy' 
+    });
 }); 
 

@@ -31,6 +31,7 @@
 				{{ elemento.direccion }}
 			</td>
 			<td>
+				<a href="{% url 'editar_cliente' elemento.id %}"><i class="glyphicon glyphicon-edit"></i> Editar datos personales </a>
 				<a href="{% url 'ver_vehiculos_cliente' elemento.id %}"><i class="glyphicon glyphicon-eye-open"></i> Ver vehiculos </a>
 			</td>
 		</tr>

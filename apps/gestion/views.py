@@ -5,8 +5,10 @@ from django.http import HttpResponse,HttpResponseRedirect, HttpResponse,Http404
 from django.core.urlresolvers import reverse
 from django.db import transaction
 import time
+from datetime import timedelta,date
 from .forms import *
 from .models import *
+from django.db.models import Q
 
 # Create your views here.
 def home(request):
@@ -16,9 +18,10 @@ def home(request):
 		'vehiculo' : vehiculo,
 		'cliente'  : cliente,
 	}
-	if request.session.get('error'):
+	"""if request.session.get('error'):
 		values['error'] = request.session.get('error')
-		del request.session['error']
+		del request.session['error']"""
+	verificar_error(request,values)
 	return render_to_response('index.html',values,context_instance = RequestContext(request))
 
 def nuevo_vehiculo(request):
@@ -36,8 +39,7 @@ def guardar_vehiculo(request):
 	if request.method == "POST":
 		vehiculo = VehiculoForm(request.POST)
 		cliente = ClienteForm(request.POST)
-		print vehiculo.is_valid() and cliente.is_valid() and request.POST['id_cliente'] == "no_client"
-		if vehiculo.is_valid() and cliente.is_valid() and request.POST['id_cliente'] == "no_client":
+		if vehiculo.is_valid() and cliente.is_valid() and request.POST['id_cliente'] == "no_client" and not comparar_cliente(cliente.cleaned_data['nombre']):
 			auto = Vehiculo()
 			auto.patente 		= vehiculo.cleaned_data['patente']
 			auto.tipo_vehiculo  = vehiculo.cleaned_data['tipo_vehiculo']
@@ -98,7 +100,7 @@ def guardar_vehiculo(request):
 				finally:
 					request.session['error'] = "El vehiculo se guardo correctamente."
 					return HttpResponseRedirect(reverse("home"))
-	request.session['error'] = "El vehiculo no se pudo guardar, verifique los datos."
+	request.session['error'] = "El vehiculo no se pudo guardar, puede ser que el cliente ya este cargado en la base de datos."
 	return HttpResponseRedirect(reverse("home"))	
 
 def obtener_vehiculo(request,patente):
@@ -237,6 +239,7 @@ def ver_clientes(request):
 	values = {
 		'listado' : listado,
  	}
+ 	verificar_error(request,values)
  	return render_to_response('gestion/ver_clientes.html',values,context_instance = RequestContext(request))
 
 def ver_vehiculos_cliente(request,id):
@@ -247,6 +250,7 @@ def ver_vehiculos_cliente(request,id):
 		'cliente' 	: cliente,
 		'vehiculos'	: vehiculos,
 	}
+	
 	return render_to_response('gestion/vehiculos_cliente.html',values,context_instance = RequestContext(request))
 
 def detalle_trabajo(request,id):
@@ -283,3 +287,62 @@ def imprimir_historia(request,id):
 		'trabajos' : trabajos,
 	}
 	return render_to_response('gestion/imprimir_historia.html',values,context_instance = RequestContext(request))	
+
+def comparar_cliente(cliente):
+	nombres = cliente.split(' ')
+	clientes = Cliente.objects.all()
+	for name in nombres:
+		clientes = clientes.filter(nombre__contains=name)
+	return len(clientes)
+
+def obtener_cumpleanios(request):
+	queryset = Cliente.objects.all()
+	queryset = queryset.distinct()
+	today	 = date.today()
+	lista_cumpleanios = []
+	lista_cumpleanios.extend(list(queryset.filter(fecha_nacimiento__month=today.month,fecha_nacimiento__day = today.day)))
+	next_day = today + timedelta(days=1)
+	for day in range(0,15):
+		lista_cumpleanios.extend(list(queryset.filter(fecha_nacimiento__month=next_day.month,fecha_nacimiento__day=next_day.day)))
+		next_day = next_day + timedelta(days=1)
+
+	data = serializers.serialize("json", lista_cumpleanios)
+	return HttpResponse(data, content_type='application/json')
+
+def editar_cliente(request,id):
+	cliente = Cliente.objects.get(id=id)
+	form = ClienteForm(instance=cliente)
+	values = {
+		'cliente' : cliente,
+		'form' : form,
+	}
+	return render_to_response('gestion/editar_cliente.html',values,context_instance = RequestContext(request))
+
+def editar_cliente_save(request,id):
+	if request.method == 'POST':
+		cliente = Cliente.objects.get(id=id)
+		form = ClienteForm(request.POST)
+		if form.is_valid():
+			cliente.nombre 				= form.cleaned_data['nombre']
+			cliente.fecha_nacimiento 	= form.cleaned_data['fecha_nacimiento']
+			cliente.direccion 			= form.cleaned_data['direccion']
+			cliente.telefono_numero 	= form.cleaned_data['telefono_numero']
+			cliente.otro_contacto 		= form.cleaned_data['otro_contacto']
+			cliente.save()
+			request.session['error'] = "El cliente se modifico correctamente."
+			return HttpResponseRedirect(reverse('ver_clientes'))
+		else:
+			values = {
+				'cliente' : cliente,
+				'form'    : form,
+				'error' : "Revise los errores en el formulario."
+ 			}
+ 			
+ 			return render_to_response('gestion/editar_cliente.html',values,context_instance=RequestContext(request))
+ 	request.session['error'] = "No se puede realizar la operacion solicitada."
+ 	return HttpResponseRedirect(reverse('editar_cliente',args=[cliente.id]))
+
+def verificar_error(request,values):
+	if request.session.get('error'):
+		values['error'] = request.session.get('error')
+		del request.session['error']

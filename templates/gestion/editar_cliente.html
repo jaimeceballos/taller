@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+{% block cuerpo %}
+<div class ="row" >
+	<div class="col-md">
+		<form role="form" method=post action="{% url 'editar_cliente_save' cliente.id %}"> {% csrf_token %}
+			<div class="form-group">
+				<label for="id_nombre"> Nombre: </label>
+				{{ form.nombre }}
+
+			</div>
+			<div class = "form-group">
+				<label for="id_fecha_nacimiento"> Fecha de Nacimiento: </label>
+				{{ form.fecha_nacimiento }}
+			</div>
+			<div class="form-group">
+				<label for="id_direccion"> Direcci&oacute;n: </label>
+				{{ form.direccion }}
+
+			</div>
+			<div class="form-group">
+				<label for="id_telefono_numero"> Tel&eacute;fono: </label>
+				{{ form.telefono_numero }}
+
+			</div>
+
+			<div class="form-group">
+				<label for="id_otro_contacto"> Otro Cont&aacute;cto: </label>
+				{{ form.otro_contacto }}
+
+			</div>
+			<button type="submit" class="btn btn-success pull-right">
+					Guardar
+				</button>
+		</form>
+	</div>
+</div>
+
+{% endblock cuerpo %}

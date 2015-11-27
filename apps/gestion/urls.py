@@ -20,5 +20,7 @@ urlpatterns = [
     url(r'^detalle_trabajo/(?P<id>[0-9]+)/$',detalle_trabajo,name='detalle_trabajo'),
     url(r'^imprimir_trabajo/(?P<id>[0-9]+)/$',imprimir_trabajo,name='imprimir_trabajo'),
     url(r'^imprimir_historia/(?P<id>[0-9]+)/$',imprimir_historia,name='imprimir_historia'),
-   
+    url(r'^obtener_cumpleanios/$',obtener_cumpleanios,name='obtener_cumpleanios'),
+    url(r'^editar_cliente/(?P<id>[0-9]+)/$',editar_cliente,name='editar_cliente'),
+    url(r'^editar_cliente_save/(?P<id>[0-9]+)/$',editar_cliente_save,name='editar_cliente_save'),
 ]

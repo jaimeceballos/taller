@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 {% block cuerpo %}
 <div>
-	<h2>Finalizar trabajo Nro. {{ trabajo.id }}</h2><hr>
+	<h2>Editar trabajo Nro. {{ trabajo.id }}</h2><hr>
 		<ul>
 			<li>
 				<p class="text-left text-muted lead"><b>Cliente: </b> {{ cliente.nombre|capfirst }}</p>
@@ -34,8 +34,11 @@
 		<a href="{% url 'ver_trabajos' %}" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-remove"></i> Cancelar</a>
 		</div>
 		{{ form.vehiculo }} 
+
+		{{ form.fecha_ingreso }}
 		<script type="text/javascript"> 
 			$("#id_vehiculo").hide();
+			$("#id_fecha_ingreso").hide();
 		 </script>
 	</form>
 </div>
