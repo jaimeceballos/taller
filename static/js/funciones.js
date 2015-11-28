@@ -68,5 +68,10 @@ $(document).ready(function() {
       changeYear: true,
       dateFormat: 'dd/mm/yy' 
     });
+    $("#id_fecha_entrega").datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'dd/mm/yy' 
+    });
 }); 
 

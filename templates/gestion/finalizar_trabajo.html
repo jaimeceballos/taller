@@ -16,6 +16,10 @@
 	<hr>
 	<form id="form_finalizar_trabajo" role="form" method="POST" action="{% url 'finaliza' trabajo.id %}">{% csrf_token %}
 		<div class="form-group">
+			<label for="id_fecha_entrega">Fecha Finalizado</label>
+			{{ form.fecha_entrega }}
+		</div>
+		<div class="form-group">
 			<label for="exampleInputPassword1">
 				Trabajo Realizado
 			</label>
@@ -39,6 +43,7 @@
 			$("#id_vehiculo").hide();
 			$("#id_precio").removeAttr("disabled");
 			$("#id_fecha_ingreso").hide();
+			$("#id_fecha_entrega").attr('required','required');
 		 </script>
 	</form>
 </div>

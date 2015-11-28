@@ -23,4 +23,6 @@ urlpatterns = [
     url(r'^obtener_cumpleanios/$',obtener_cumpleanios,name='obtener_cumpleanios'),
     url(r'^editar_cliente/(?P<id>[0-9]+)/$',editar_cliente,name='editar_cliente'),
     url(r'^editar_cliente_save/(?P<id>[0-9]+)/$',editar_cliente_save,name='editar_cliente_save'),
+    url(r'^editar_vehiculo/(?P<id>[0-9]+)/$',editar_vehiculo,name='editar_vehiculo'),
+    url(r'^editar_vehiculo_save/(?P<id>[0-9]+)/$',editar_vehiculo_save,name='editar_vehiculo_save'),
 ]

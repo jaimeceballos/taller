@@ -15,6 +15,8 @@
 					</th>
 					<th>
 					</th>
+					<th>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -25,6 +27,9 @@
 					</td>
 					<td>
 						{{ vehiculo.vehiculo.patente }}
+					</td>
+					<td>
+						<a href="{% url 'editar_vehiculo' vehiculo.id %}"> <i class="glyphicon glyphicon-edit"></i> Editar datos del vehiculo </a>
 					</td>
 					<td>
 						<a href="{% url 'carga_trabajo' vehiculo.vehiculo.id %}"> <i class="glyphicon glyphicon-plus"></i> Asignar Trabajo </a>

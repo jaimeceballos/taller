@@ -21,10 +21,12 @@ class VehiculoForm(forms.ModelForm):
 		('camioneta','CAMIONETA'),
 		('camion','CAMION'),
 		('moto','MOTO'),
+		('trailer','TRAILER'),
+		('motorhome','MOTORHOME'),
 		)
 	tipo_vehiculo			= forms.ChoiceField(choices=TIPO_VEHICULO_CHOICES)
 	modelo_marca			= forms.CharField(widget=forms.TextInput(attrs=dict({'class':'required form-control','placeholder':'Ingrese la marca y modelo del vehiculo.'})))
-	patente 				= forms.CharField(widget=forms.TextInput(attrs=dict({'class':'requiered form-control col-md-2','autocomplete':'off','placeholder':'Ingrese el numero de patente.'})))
+	patente 				= forms.CharField(widget=forms.TextInput(attrs=dict({'required':'required','class':'form-control col-md-2','autocomplete':'off','placeholder':'Ingrese el numero de patente.'})))
 	observaciones			= forms.CharField(required=False,widget=forms.Textarea(attrs=dict({'class':'requiered form-control','placeholder':'Aqui escriba todo los datos que considere relevantes acerca del vehiculo.'})))
 
 	class Meta:
@@ -37,8 +39,9 @@ class TrabajoForm(forms.ModelForm):
 	km_ingreso 		= forms.CharField(required = False,widget=forms.TextInput(attrs=dict({'class':'form-control','placeholder':'Si es posible ingrese el kilometraje actual.'})))
 	descripcion 	= forms.CharField(required = False,widget=forms.Textarea(attrs=dict({'class':'required form-control','placeholder':'Describa el trabajo realizado.'})))
 	precio 			= forms.CharField(required = False,widget=forms.TextInput(attrs=dict({'class':'form-control','disabled':'disabled'})))
+	fecha_entrega	= forms.DateField(initial=datetime.date.today,required=False)
 
 	class Meta:
 		model  	= Trabajo
-		exclude = ['fecha_entrega','estado',]
+		exclude = ['estado',]
 

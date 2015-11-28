@@ -245,12 +245,12 @@ def ver_clientes(request):
 def ver_vehiculos_cliente(request,id):
 	cliente 	= Cliente.objects.get(id=id)
 	vehiculos 	= cliente.tiene.all()
-	print vehiculos
 	values = {
 		'cliente' 	: cliente,
 		'vehiculos'	: vehiculos,
 	}
-	
+	verificar_error(request,values)
+	request.session['cliente'] = cliente.id
 	return render_to_response('gestion/vehiculos_cliente.html',values,context_instance = RequestContext(request))
 
 def detalle_trabajo(request,id):
@@ -346,3 +346,39 @@ def verificar_error(request,values):
 	if request.session.get('error'):
 		values['error'] = request.session.get('error')
 		del request.session['error']
+
+def editar_vehiculo(request,id):
+	vehiculo = Vehiculo.objects.get(id=id)
+	form 	 = VehiculoForm(instance=vehiculo)
+	values = {
+		'vehiculo' : vehiculo,
+		'form' 	   : form,	
+	}
+	return	render_to_response('gestion/editar_vehiculo.html',values,context_instance=RequestContext(request))
+
+def editar_vehiculo_save(request,id):
+	if request.method == 'POST':
+		vehiculo = Vehiculo.objects.get(id=id)
+		form = VehiculoForm(request.POST)
+		if form.is_valid():
+			vehiculo.tipo_vehiculo 	= form.cleaned_data['tipo_vehiculo']
+			vehiculo.modelo_marca 	= form.cleaned_data['modelo_marca']
+			vehiculo.patente 		= form.cleaned_data['patente']
+			vehiculo.observaciones	= form.cleaned_data['observaciones']
+			vehiculo.save()
+			request.session['error'] = "Los datos del vehiculo se modificaron con exito."
+			cliente = request.session.get('cliente')
+			return HttpResponseRedirect(reverse('ver_vehiculos_cliente',args=[cliente]))
+		else:
+			values = {
+				'vehiculo' : vehiculo,
+				'form' 	   : form,
+				'error'    : "Por favor revise los siguientes errores en el formulario:\n" 		
+			}
+			for error in form.errors:
+				values['error'] = values['error'] + error +'\n'
+			return render_to_response('gestion/editar_vehiculo.html',values,context_instance=RequestContext(request))
+	else:
+		request.session['error'] = "No se puede realizar la operacion solicitada"
+		cliente = request.session.get('cliente')
+		return HttpResponseRedirect(reverse('ver_vehiculos_cliente',args=[cliente]))

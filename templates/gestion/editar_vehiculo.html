@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+{% block cuerpo %}
+	<div class="row">
+		<div class="col-md">
+			<h3>Editar datos del vehiculo</h3>
+			<form role="form" method="POST" action="{% url 'editar_vehiculo_save' vehiculo.id %}">{% csrf_token %}
+				<div class="form-group">
+					<label for="id_tipo_vehiculo">Tipo de Vehiculo</label>
+					{{ form.tipo_vehiculo}}
+				</div>
+				<div class="form-group">
+					<label for="id_modelo_marca">Modelo - Marca</label>.
+					{{ form.modelo_marca }}
+				</div>
+				<div class="form-group">
+					<label for="id_patente">Patente</label>
+					{{ form.patente }}
+				</div>
+				<div class="form-group">
+					<label for="id_observaciones">Observaciones</label>
+					{{ form.observaciones }}
+				</div>
+				<button type="submit" class="btn btn-success pull-right">
+					Guardar
+				</button>
+			</form>
+		</div>
+	</div>
+	
+{% endblock cuerpo %}
