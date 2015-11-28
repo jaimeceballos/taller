@@ -228,7 +228,7 @@ def finaliza(request,id):
 	return render_to_response('gestion/finalizar_trabajo.html',values,context_instance = RequestContext(request))
 
 def ver_ultimos_entregados(request):
-	listado = Trabajo.objects.filter(fecha_entrega__isnull=False)[:10]
+	listado = Trabajo.objects.filter(fecha_entrega__isnull=False)
 	values = {
 		'listado' : listado,
 	}
