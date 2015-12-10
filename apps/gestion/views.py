@@ -214,6 +214,12 @@ def finaliza(request,id):
 			trabajo.fecha_entrega 	= time.strftime("%Y-%m-%d")
 			trabajo.estado 			= 2
 			trabajo.save()
+			if trabajo.vehiculo.pertenece_a.all()[0].cliente.telefono_numero:
+				enviarsms(
+						'+54'+trabajo.vehiculo.pertenece_a.all()[0].cliente.telefono_numero,
+						trabajo.vehiculo.modelo_marca+' - '+trabajo.vehiculo.patente,
+						trabajo.precio
+						)
 			return HttpResponseRedirect(reverse('imprimir_trabajo',args=[trabajo.id]))
 
 	form 		 	= TrabajoForm(instance=Trabajo.objects.get(id=id))
