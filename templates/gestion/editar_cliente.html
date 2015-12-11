@@ -1,6 +1,7 @@
 {% extends 'index.html' %}
 {% block cuerpo %}
 <div class ="row" >
+	<h2>Editar datos del cliente</h2><hr>
 	<div class="col-md">
 		<form role="form" method=post action="{% url 'editar_cliente_save' cliente.id %}"> {% csrf_token %}
 			<div class="form-group">

@@ -73,5 +73,25 @@ $(document).ready(function() {
       changeYear: true,
       dateFormat: 'dd/mm/yy' 
     });
+    $("#id_fecha_entrega").change(function(){
+    	fecha = $("#id_fecha_entrega");
+
+    	dia = fecha.val().substring(0,2);
+    	mes = fecha.val().substring(3,5);
+    	anio = fecha.val().substring(6,10);
+
+    	fecha_nueva = new Date(mes+"/"+dia+"/"+anio);
+    	fecha_actual = new Date();
+
+    	if(fecha_actual<fecha_nueva){
+    		fecha.focus();
+    		fecha.val('');
+    		fecha.addClass('input_error');
+    		alert('La fecha de finalizacion del trabajo no puede ser mayor a la fecha actual.');
+    	}else{
+    		fecha.removeClass('input_error');
+    	}
+
+    });
 }); 
 
