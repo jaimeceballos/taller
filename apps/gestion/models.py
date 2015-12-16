@@ -5,7 +5,7 @@ import datetime
 class Cliente(models.Model):
 	nombre					= models.CharField(max_length=100)
 	fecha_nacimiento		= models.DateField(default=datetime.date.today,blank=True,null=True)
-	telefono_numero 		= models.CharField(max_length=10, null=True)
+	telefono_numero 		= models.CharField(max_length=20, null=True)
 	direccion				= models.CharField(max_length=100, null=True)
 	otro_contacto			= models.CharField(max_length=150, null=True)
 
